@@ -9,7 +9,6 @@ loop do
   end
 end
 string = string.split('').to_a
-puts string
 
 #Asks for the number of positions the letter are to be shifted
 puts "And what would the shifting factor be?"
@@ -19,16 +18,31 @@ def caesar_cipher (string, shift)
   alphabet = ('a'..'z').to_a
   caps_alphabet = ('A'..'Z').to_a
   encrypted_word = []
+  wrap = 0
   for character in string do
+  if character == 33.chr
+    encrypted_word.push(character)
+    next
+  end
     alphabet.each_index do |index|
       if character == alphabet[index]
-        encrypted_word.push(alphabet[index+shift])
+        if shift + index > 26
+          wrap = shift + index - 26
+          encrypted_word.push(alphabet[wrap])
+        else
+          encrypted_word.push(alphabet[shift + index])
+        end
       elsif character == caps_alphabet[index]
-        encrypted_word.push(caps_alphabet[index+shift])
+        if shift + index > 26
+          wrap = shift + index - 26
+          encrypted_word.push(caps_alphabet[wrap])
+        else
+          encrypted_word.push(caps_alphabet[index+shift])
+        end
       end
     end
   end
-  puts encrypted_word.join('')   
+  puts encrypted_word.join('') 
 end
 
 caesar_cipher(string, shift)
